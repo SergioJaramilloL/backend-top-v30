@@ -2,7 +2,7 @@
   "name": "orm-prisma",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn src/app.ts",
