@@ -23,8 +23,9 @@ export async function createUserHandler(req: Request, res: Response) {
   return res.json(user);
 }
 
-export async function getUserHandler(req: Request, res: Response) {
-  const { id } = req.params;
+
+export async function getUserHandler(req: AuthRequest, res: Response) {
+  const { id } = req.user as User;
 
   const user = await getUserById(id);
 

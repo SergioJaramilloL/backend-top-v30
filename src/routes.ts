@@ -14,6 +14,7 @@ const routes = (app: Application) => {
 
   //Auth
   app.use('/auth/local', authLocalRouter)
+  
 }
 
 export default routes

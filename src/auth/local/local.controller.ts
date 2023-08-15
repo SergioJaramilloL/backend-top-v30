@@ -30,13 +30,16 @@ export async function loginHandler(req: Request, res: Response){
     const token = signToken(payload)
 
     const profile = {
-      firstName: user.firstName,
-      lastName: user.lastName,
+      fullName: `${user.firstName} ${user.lastName}`,
       email: user.email,
       avatar: user.avatar,
+      roles: user.roles.map(({ Role }) => ({
+        id: Role.id,
+        name: Role.name
+      }))
     }
 
-    return res.status(200).json({ token, profile })
+    return res.status(200).json({ token, profile})
 
   } catch(error) {}
 }

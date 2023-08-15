@@ -13,8 +13,13 @@ export const getAllProductsHandler = async (_: Request, res: Response) => {
 
 export const createProductHandler = async (req: Request, res: Response) => {
   const data = req.body
+  try {
 
-  const productCreated = await createProduct(data)
+    const productCreated = await createProduct(data)
 
-  return res.status(201).json(productCreated)
+    return res.status(201).json(productCreated)
+
+  } catch (error: any) {
+    res.status(401).json(error.message)
+  }
 }

@@ -6,7 +6,26 @@ import { User } from './user.types';
 const prisma = new PrismaClient();
 
 export async function getAllUser() {
-  const users = await prisma.user.findMany();
+  const users = await prisma.user.findMany({
+    select: {
+      id: false,
+      firstName: true,
+      lastName: true,
+      email: true,
+      avatar: true,
+      //
+      roles:{
+        select: {
+          Role: {
+            select: {
+              id: true,
+              name: true,
+            }
+          }
+        }
+      }
+    }
+  });
   return users;
 }
 
@@ -41,6 +60,18 @@ export async function getUserByEmail(email: string) {
     where: {
       email,
     },
+    include: {
+      roles: {
+        select: {
+          Role: {
+            select: {
+              id: true,
+              name: true
+            }
+          }
+        }
+      }
+    }
   });
 
   return user;
