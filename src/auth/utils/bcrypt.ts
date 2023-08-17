@@ -26,3 +26,11 @@ export const comparePassword = async (
 ) => {
   return await bcrypt.compare(password, hashedPassword);
 }
+
+export const hashPasswordSync = (password: string, factor?: number) => {
+  // 1. salt
+  const salt = bcrypt.genSaltSync(factor)
+
+  // 2. hash
+  return bcrypt.hashSync(password, salt)
+}
