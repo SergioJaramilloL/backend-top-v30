@@ -7,20 +7,52 @@ import {
   getUserById,
 } from './user.service';
 import { AuthRequest } from '../../auth/auth.types';
-import { User } from './user.types';
+import { User, RequestUserData, UserCredential } from './user.types';
+import { createUserRole } from '../userRole/userRole.service';
+import { UserRole } from '../userRole/userRole.types';
 
 export async function getAllUserHandler(req: Request, res: Response) {
-  const users = await getAllUser();
+  try {
 
-  return res.json(users);
+    const users = await getAllUser();
+    
+    return res.status(202).json({ message: 'users has been found successfully', users });
+  } catch({ message }: any) {
+
+    res.status(400).json({ message })
+  }
 }
 
 export async function createUserHandler(req: Request, res: Response) {
-  const data = req.body;
+  try {
 
-  const user = await createUser(data);
+    const { firstName, lastName, email, password, roleId }: RequestUserData = req.body;
+    
+    const newUser: UserCredential = {
+      firstName,
+      lastName,
+      email,
+      password,
+    }
+    const user: User = await createUser(newUser);
+    
+    const dataRelation: UserRole = {
+      userId: user.id,
+      roleId
+    }
+    await createUserRole(dataRelation)
 
-  return res.json(user);
+    const profile = {
+      fullName: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      avatar: user.avatar,
+    }
+    
+    res.status(201).json({ message: 'user has been created successfully', profile });
+  } catch ({ message }: any) {
+
+    res.status(400).json({ message })
+  }
 }
 
 

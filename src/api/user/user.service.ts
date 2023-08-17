@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import { hashPassword } from '../../auth/utils/bcrypt';
-import { User } from './user.types';
+import { UserCredential, User } from './user.types';
 
 const prisma = new PrismaClient();
 
@@ -29,7 +29,7 @@ export async function getAllUser() {
   return users;
 }
 
-export async function createUser(input: User) {
+export async function createUser(input: UserCredential) {
 
   const hashedPassword = await hashPassword(input.password);
 

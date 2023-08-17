@@ -1,5 +1,4 @@
 import { Response, NextFunction } from 'express';
-//import { compose } from 'compose-middleware';
 
 import { getUserByEmail } from '../api/user/user.service';
 import { AuthRequest } from './auth.types';
