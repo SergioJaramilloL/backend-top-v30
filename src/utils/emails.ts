@@ -28,7 +28,13 @@ export const welcomeEmail = (user: User) => {
         <p>Gracias por unirte a nuestra App</p>
       </div>
     `,
-    text: `Bienvenido a Make it Real Camp`
+    text: `Bienvenido a Make it Real Camp`,
+    attachments: [
+      {
+        filename: 'logo.png',
+        path: 'src/assets/logo.png',
+      }
+    ]
   }
 
   return email

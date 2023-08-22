@@ -10,8 +10,10 @@ import { AuthRequest } from '../../auth/auth.types';
 import { User, RequestUserData, UserCredential } from './user.types';
 import { createUserRole } from '../userRole/userRole.service';
 import { UserRole } from '../userRole/userRole.types';
-import { sendNodeMailer } from '../../config/nodemailer';
-import { welcomeEmail } from '../../utils/emails';
+// import { sendNodeMailer } from '../../config/nodemailer';
+// import { welcomeEmail } from '../../utils/emails';
+import { sendMailSendGrid } from '../../config/senGrid';
+import { welcomeEmailSG } from '../../utils/emailSendGrid';
 
 export async function createUserHandler(req: Request, res: Response) {
   try {
@@ -38,7 +40,8 @@ export async function createUserHandler(req: Request, res: Response) {
       avatar: user.avatar,
     }
 
-    await sendNodeMailer(welcomeEmail(user))
+    //await sendNodeMailer(welcomeEmail(user))
+    sendMailSendGrid(welcomeEmailSG(user))
     
     res.status(201).json({ message: 'user has been created successfully', profile });
   } catch ({ message }: any) {
