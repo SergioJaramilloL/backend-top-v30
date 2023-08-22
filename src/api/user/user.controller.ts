@@ -10,18 +10,8 @@ import { AuthRequest } from '../../auth/auth.types';
 import { User, RequestUserData, UserCredential } from './user.types';
 import { createUserRole } from '../userRole/userRole.service';
 import { UserRole } from '../userRole/userRole.types';
-
-export async function getAllUserHandler(req: Request, res: Response) {
-  try {
-
-    const users = await getAllUser();
-    
-    return res.status(202).json({ message: 'users has been found successfully', users });
-  } catch({ message }: any) {
-
-    res.status(400).json({ message })
-  }
-}
+import { sendNodeMailer } from '../../config/nodemailer';
+import { welcomeEmail } from '../../utils/emails';
 
 export async function createUserHandler(req: Request, res: Response) {
   try {
@@ -47,9 +37,23 @@ export async function createUserHandler(req: Request, res: Response) {
       email: user.email,
       avatar: user.avatar,
     }
+
+    await sendNodeMailer(welcomeEmail(user))
     
     res.status(201).json({ message: 'user has been created successfully', profile });
   } catch ({ message }: any) {
+
+    res.status(400).json({ message })
+  }
+}
+
+export async function getAllUserHandler(req: Request, res: Response) {
+  try {
+
+    const users = await getAllUser();
+    
+    return res.status(202).json({ message: 'users has been found successfully', users });
+  } catch({ message }: any) {
 
     res.status(400).json({ message })
   }
@@ -87,3 +91,4 @@ export async function deleteUserHandler(req: AuthRequest, res: Response) {
 }
 
 export async function updateUserHandler(req: Request, res: Response) {}
+ 
