@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto'
 
 /**
  * Hash password
@@ -33,4 +34,9 @@ export const hashPasswordSync = (password: string, factor?: number) => {
 
   // 2. hash
   return bcrypt.hashSync(password, salt)
+}
+
+
+export const createHashToken = (data: string) =>  {
+  return crypto.createHash('sha256').update(data).digest('hex');
 }

@@ -36,14 +36,12 @@ export async function createUserHandler(req: Request, res: Response) {
 
     const profile = {
       fullName: `${user.firstName} ${user.lastName}`,
-      email: user.email,
-      avatar: user.avatar,
     }
 
     //await sendNodeMailer(welcomeEmail(user))
     sendMailSendGrid(welcomeEmailSG(user))
     
-    res.status(201).json({ message: 'user has been created successfully', profile });
+    res.status(201).json({ message: 'user register successfully, please verifry account', profile });
   } catch ({ message }: any) {
 
     res.status(400).json({ message })

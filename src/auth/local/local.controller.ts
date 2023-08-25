@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 
-import { getUserByEmail } from '../../api/user/user.service';
+import { 
+  getUserByEmail, 
+  getUserByResetToken,
+  updateUser 
+} from '../../api/user/user.service';
 import { comparePassword } from '../utils/bcrypt';
-import { signToken } from '../auth.service'; 
+import { createAuthResponse } from './local.service';
 
 export async function loginHandler(req: Request, res: Response){
   const { email, password } = req.body;
@@ -21,24 +25,42 @@ export async function loginHandler(req: Request, res: Response){
       return res.status(401).send('Invalid credentials');
     }
 
-    // JWT
-    const payload = {
-      id: user.id,
-      email: user.email,
-    }
-    const token = signToken(payload)
-
-    const profile = {
-      fullName: `${user.firstName} ${user.lastName}`,
-      email: user.email,
-      avatar: user.avatar,
-      roles: user.roles.map(({ Role }) => ({
-        id: Role.id,
-        name: Role.name
-      }))
-    }
-
+    const { token, profile } = createAuthResponse(user);
+   
     return res.status(200).json({ token, profile})
 
   } catch(error) {}
+}
+
+export async function activeHandler(req: Request, res: Response){
+  try {
+    const { token: tokenParam } = req.params;
+    const user = await getUserByResetToken(tokenParam);
+
+    if(!user) {
+      return res.status(404).json({ message: 'Invalid token'});
+    }
+
+    if(user.tokenExpires){
+      if(Date.now() > user.tokenExpires.getTime()) {
+        return res.status(400).json({ message: 'Token expired'});
+      }
+    }
+
+    const data = {
+      ...user,
+      isActive: true,
+      resetToken: null,
+      tokenExpires: null
+    }
+
+    const currentUser = await updateUser(data);
+
+    const { token, profile } = createAuthResponse(currentUser);
+
+
+    return res.status(200).json({ token, profile})
+  } catch(error: any) {
+    res.status(400).json({ message: error.message })
+  }
 }

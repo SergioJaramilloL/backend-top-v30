@@ -8,9 +8,9 @@ export const welcomeEmailSG = (user: User) => {
     subject: 'Welcome to the app',
     templateId: 'd-20f39044f5ad4363a806030658b00ce9',
     dynamic_template_data: {
-      firstname: user.firstName,
-      lastname: user.lastName,
-      redirectUrl: 'https://makeitreal.camp/'
+      firstName: user.firstName,
+      lastName: user.lastName,
+      redirectUrl: `http://localhost:5173/verify-account/${user.resetToken}`
     }
   }
 

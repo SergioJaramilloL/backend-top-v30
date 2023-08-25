@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { loginHandler } from './local.controller'
+import { loginHandler, activeHandler } from './local.controller'
 
 const route = Router()
 
@@ -10,6 +10,7 @@ route.post('/login', loginHandler)
 //change password
 //reset password
 //active account
+route.get('/active-account/:token', activeHandler)
 //louout
 
 export default route
