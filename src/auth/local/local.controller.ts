@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 
 import { getUserByEmail } from '../../api/user/user.service';
 import { comparePassword } from '../utils/bcrypt';
