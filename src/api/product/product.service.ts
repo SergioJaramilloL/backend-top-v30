@@ -4,20 +4,29 @@ import { Product } from './product.types'
 
 const prisma = new PrismaClient()
 
-export const getAllProducts = async () => {
-  const products = await prisma.product.findMany({
-    include: {
-      reviews: {
-        select: {
-          id: true,
-          text: true,
-          rating: true,
+export const getAllProducts = async (page: number, pageSize: number) => {
+  const skip = (page - 1) * pageSize
+
+
+  const [ products, totalCount ] = await Promise.all([
+    prisma.product.findMany({
+      skip,
+      take: pageSize,
+      include: {
+        reviews: {
+          select: {
+            id: true,
+            text: true,
+            rating: true,
+          }
         }
       }
-    }
-  })
+    }),
+    prisma.product.count()
+  ])
 
-  return products
+
+  return { products, totalCount }
 }
 
 export const createProduct = async (input: Product) => {

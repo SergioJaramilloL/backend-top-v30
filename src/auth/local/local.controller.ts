@@ -59,7 +59,7 @@ export async function activeHandler(req: Request, res: Response){
     const { token, profile } = createAuthResponse(currentUser);
 
 
-    return res.status(200).json({ token, profile})
+    res.status(200).json({ token, profile})
   } catch(error: any) {
     res.status(400).json({ message: error.message })
   }

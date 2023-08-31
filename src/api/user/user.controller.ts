@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult, Result } from 'express-validator';
 
 import {
   createUser,
@@ -17,8 +18,18 @@ import { welcomeEmailSG } from '../../utils/emailSendGrid';
 
 export async function createUserHandler(req: Request, res: Response) {
   try {
+    const { firstName, lastName, email, password, roleId }: RequestUserData = req.body;   
+    const result: Result = validationResult(req);
+    
+    if(!result.isEmpty()) {
+      const response = result.array().map((error) => ({
+        path: error.path,
+        msg: error.msg
+      }))
 
-    const { firstName, lastName, email, password, roleId }: RequestUserData = req.body;
+      return res.status(400).json({ message: 'Unable to create a user', error: response })
+    }
+    
     
     const newUser: UserCredential = {
       firstName,
