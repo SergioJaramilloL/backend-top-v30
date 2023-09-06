@@ -9,23 +9,23 @@ import { productSeeder } from './../src/api/product/product.seeder';
 const prisma = new PrismaClient();
 
 async function main() {
-  //Crear algunos roles
-  const createRoles = await prisma.role.createMany({
-    data: roleSeeder,
-    skipDuplicates: true,
-  })
+  // //Crear algunos roles
+  // const createRoles = await prisma.role.createMany({
+  //   data: roleSeeder,
+  //   skipDuplicates: true,
+  // })
 
-  // Crear muchos usuarios
-  const createUsers = await prisma.user.createMany({
-    data: userSeeder,
-    skipDuplicates: true,
-  })
+  // // Crear muchos usuarios
+  // const createUsers = await prisma.user.createMany({
+  //   data: userSeeder,
+  //   skipDuplicates: true,
+  // })
 
-  // Crear muchos usuariosRoles
-  const createUserRoles = await prisma.userRole.createMany({
-    data: userRoleSeeder,
-    skipDuplicates: true,
-  })
+  // // Crear muchos usuariosRoles
+  // const createUserRoles = await prisma.userRole.createMany({
+  //   data: userRoleSeeder,
+  //   skipDuplicates: true,
+  // })
 
   const createProducts = await prisma.product.createMany({
     data: productSeeder,
@@ -34,9 +34,9 @@ async function main() {
 
 
   console.log({
-    createRoles, 
-    createUsers, 
-    createUserRoles,
+    // createRoles, 
+    // createUsers, 
+    // createUserRoles,
     createProducts
   });
 }

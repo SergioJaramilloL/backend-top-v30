@@ -4,6 +4,7 @@ import configExpress from './config/express'
 import routes from './routes'
 
 import { formData } from './middlewares/formData'
+import { clientRedis } from './config/redis'
 
 
 const app = express()
@@ -20,6 +21,8 @@ app.post('/test-formdata', formData, (req, res) => {
   res.json(req.body)
 })
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  clientRedis.on('error', (err) => console.log('Redis client error', err))
+  await clientRedis.connect();
   console.log(`Example app listening on port ${port}`)
 })

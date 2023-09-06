@@ -29,7 +29,7 @@ export async function getAllUser() {
   return users;
 }
 
-export async function createUser(input: UserCredential) {
+export async function createUser(input: any) {
 
   const hashedPassword = await hashPassword(input.password);
   const expiresIn = Date.now() + 1000 * 60 * 60 * 24 // 24 horas
